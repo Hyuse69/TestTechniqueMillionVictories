@@ -11,8 +11,6 @@ public class BouttonTitre : MonoBehaviour
     private void Start()
     {
         ContenuDatas = JsonUtility.FromJson<Data>("{\"ContenuDatas\":" + json.text + "}");
-        Debug.Log(transform.GetSiblingIndex());
-        transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = ContenuDatas.ContenuDatas[transform.GetSiblingIndex()].title;
     }
 
     // Update is called once per frame
