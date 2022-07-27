@@ -1,20 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class Quit : MonoBehaviour
 {
+    private GameObject scrollView;
+    private Transform scrollViewContentTransform;
+    private GameObject content;
+
+    private void Awake()
+    {
+        scrollView = transform.parent.GetChild(2).gameObject;
+        scrollViewContentTransform = transform.parent.GetChild(2).GetChild(0).GetChild(0);
+        content = transform.parent.GetChild(3).gameObject;
+    }
+
     public void OnClick()
     {
-        transform.parent.GetChild(3).GetComponent<TextMeshProUGUI>().text = "";
-        transform.parent.GetChild(3).gameObject.SetActive(false);
+        content.GetComponent<TextMeshProUGUI>().text = "";
+        content.SetActive(false);
         
-        foreach (Transform i in transform.parent.GetChild(2).GetChild(0).GetChild(0))
+        foreach (Transform i in scrollViewContentTransform)
         {
             Destroy(i.gameObject);
         }
-        transform.parent.GetChild(2).gameObject.SetActive(false);
+        scrollView.SetActive(false);
         gameObject.SetActive(false);
     }
 }

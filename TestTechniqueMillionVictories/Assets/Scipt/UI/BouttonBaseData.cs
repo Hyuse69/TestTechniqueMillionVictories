@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 
 public class BouttonBaseData : MonoBehaviour
@@ -12,6 +8,10 @@ public class BouttonBaseData : MonoBehaviour
     public TextAsset json;
 
     public GameObject boutonPrefab;
+    private GameObject scrollView;
+    private Transform scrollViewContentTransform;
+    private GameObject content;
+    private GameObject quit;
 
     private void Awake()
     {
@@ -20,30 +20,32 @@ public class BouttonBaseData : MonoBehaviour
     private void Start()
     {
         transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = json.name;
+        scrollView = transform.parent.GetChild(2).gameObject;
+        content = transform.parent.GetChild(3).gameObject;
+        quit = transform.parent.GetChild(4).gameObject;
+        scrollViewContentTransform = transform.parent.GetChild(2).GetChild(0).GetChild(0);
     }
 
     public void OnClick()
     {
-        if (!transform.parent.GetChild(2).gameObject.activeSelf)
+        if (!scrollView.activeSelf)
         {
-            transform.parent.GetChild(2).gameObject.SetActive(true);
-            transform.parent.GetChild(3).gameObject.SetActive(true);
-            transform.parent.GetChild(4).gameObject.SetActive(true);
+            scrollView.SetActive(true);
+            content.SetActive(true);
+            quit.SetActive(true);
         }
 
-        transform.parent.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = "";
+        content.GetComponent<TextMeshProUGUI>().text = "";
         
-        foreach (Transform i in transform.parent.GetChild(2).GetChild(0).GetChild(0))
+        foreach (Transform i in scrollViewContentTransform)
         {
-            //a corriger
             Destroy(i.gameObject);
         }
         
         foreach (var i in ContenuDatas.ContenuDatas)
         {
             GameObject obj = Instantiate(boutonPrefab);
-            obj.transform.SetParent(transform.parent.GetChild(2).GetChild(0).GetChild(0));
-            Debug.Log(json.name);
+            obj.transform.SetParent(scrollViewContentTransform);
             obj.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = i.title;
             obj.AddComponent<BouttonTitre>();
             obj.GetComponent<BouttonTitre>().json = json;
